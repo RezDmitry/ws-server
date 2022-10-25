@@ -7,7 +7,7 @@ import { UsersService } from '../users/users.service';
 @Injectable()
 export class RoomsService {
   constructor(
-    @InjectModel(Room) private roomRepository: typeof Room,
+    @InjectModel(Room) private readonly roomRepository: typeof Room,
     private userService: UsersService,
   ) {}
 

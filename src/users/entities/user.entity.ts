@@ -32,7 +32,7 @@ export class User extends Model<User, UserCreationData> {
   @Column({ type: DataType.STRING, allowNull: false })
   password: string;
 
-  @HasMany(() => Message)
+  @HasMany(() => Message, 'userId')
   messages: Message[];
 
   @BelongsToMany(() => Room, () => UserRooms)

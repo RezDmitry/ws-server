@@ -32,6 +32,6 @@ export class Room extends Model<Room, RoomCreationData> {
   @BelongsToMany(() => User, () => UserRooms)
   users: User[];
 
-  @HasMany(() => Message)
+  @HasMany(() => Message, 'roomId')
   messages: Message[];
 }

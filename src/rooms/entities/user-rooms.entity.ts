@@ -1,15 +1,11 @@
 import {
-  BelongsTo,
-  BelongsToMany,
   Column,
   DataType,
   ForeignKey,
-  HasMany,
   Model,
   Table,
 } from 'sequelize-typescript';
 import { User } from '../../users/entities/user.entity';
-import { Message } from '../../messages/entities/message.entity';
 import { Room } from './room.entity';
 
 @Table({ tableName: 'user_rooms' })

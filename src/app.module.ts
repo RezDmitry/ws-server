@@ -31,7 +31,5 @@ import { Room } from './rooms/entities/room.entity';
     MessagesModule,
     RoomsModule,
   ],
-  controllers: [RoomsController],
-  providers: [RoomsService],
 })
 export class AppModule {}

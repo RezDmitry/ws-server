@@ -1,8 +1,7 @@
 import {
   BelongsTo,
   Column,
-  DataType,
-  ForeignKey,
+  DataType, ForeignKey,
   Model,
   Table,
 } from 'sequelize-typescript';
@@ -11,8 +10,8 @@ import { Room } from '../../rooms/entities/room.entity';
 
 interface MessageCreationData {
   text: string;
-  author: User;
   userId: number;
+  roomId: number;
 }
 
 @Table({ tableName: 'messages' })
@@ -29,17 +28,9 @@ export class Message extends Model<Message, MessageCreationData> {
   @Column({ type: DataType.STRING, allowNull: false })
   text: string;
 
-  @ForeignKey(() => User)
-  @Column({ type: DataType.INTEGER, allowNull: false })
-  userId: number;
-
-  @BelongsTo(() => User)
+  @BelongsTo(() => User, 'userId')
   author: User;
 
-  @ForeignKey(() => Room)
-  @Column({ type: DataType.INTEGER, allowNull: false })
-  roomId: number;
-
-  @BelongsTo(() => Room)
+  @BelongsTo(() => Room, 'roomId')
   room: Room;
 }

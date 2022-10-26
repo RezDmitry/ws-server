@@ -36,9 +36,8 @@ export class RoomsService {
     });
   }
 
-  async update(
+  async addUserToRoom(
     roomId: number,
-    dto: UpdateRoomDto,
     userId: number,
   ): Promise<Room> {
     const room = await this.findOne(roomId);

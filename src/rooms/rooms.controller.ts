@@ -23,6 +23,11 @@ export class RoomsController {
     return await this.roomsService.create(dto);
   }
 
+  @Post(':id/connect')
+  async connect(@Param('id') id: string, @Req() req) {
+    return await this.roomsService.addUserToRoom(+id, req.user.id);
+  }
+
   @Get()
   async getAll() {
     return await this.roomsService.findAll();
@@ -31,14 +36,5 @@ export class RoomsController {
   @Get(':id')
   async getOne(@Param('id') id: string) {
     return await this.roomsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() dto: UpdateRoomDto,
-    @Req() req,
-  ) {
-    return await this.roomsService.update(+id, dto, req.user.id);
   }
 }

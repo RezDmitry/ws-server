@@ -20,7 +20,7 @@ export class AuthService {
 
   async registration(createUserDto: CreateUserDto) {
     const { username, password } = createUserDto;
-    const candidate = await this.usersService.findOne(username);
+    const candidate = await this.usersService.findOneByUsername(username);
     if (candidate) {
       throw new HttpException(
         'Такой пользователь существует',
@@ -37,7 +37,7 @@ export class AuthService {
   }
 
   async validateUser(username: string, password: string): Promise<any> {
-    const user = await this.usersService.findOne(username);
+    const user = await this.usersService.findOneByUsername(username);
     if (!user) {
       throw new HttpException(
         'Такого пользователя не существует',

@@ -1,36 +1,18 @@
-import {
-  BelongsTo,
-  Column,
-  DataType, ForeignKey,
-  Model,
-  Table,
-} from 'sequelize-typescript';
 import { User } from '../../users/entities/user.entity';
 import { Room } from '../../rooms/entities/room.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-interface MessageCreationData {
-  text: string;
-  userId: number;
-  roomId: number;
-}
-
-@Table({ tableName: 'messages' })
-export class Message extends Model<Message, MessageCreationData> {
-  @Column({
-    type: DataType.INTEGER,
-    unique: true,
-    autoIncrement: true,
-    allowNull: false,
-    primaryKey: true,
-  })
+@Entity()
+export class Message {
+  @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column()
   text: string;
 
-  @BelongsTo(() => User, 'userId')
+  @ManyToOne(() => User, (user) => user.messages)
   author: User;
 
-  @BelongsTo(() => Room, 'roomId')
+  @ManyToOne(() => Room, (room) => room.messages)
   room: Room;
 }

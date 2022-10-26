@@ -1,32 +1,38 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { InjectModel } from '@nestjs/sequelize';
 import { User } from './entities/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel(User) private readonly userRepository: typeof User,
+    @InjectRepository(User) private readonly usersRepository: Repository<User>,
   ) {}
-  async create(createUserDto: CreateUserDto) {
-    return await this.userRepository.create(createUserDto);
+  async create(dto: CreateUserDto) {
+    return await this.usersRepository.save(dto);
   }
 
-  async findAll() {
-    return await this.userRepository.findAll({ include: { all: true } });
-  }
-
-  async findOne(username: string) {
-    return await this.userRepository.findOne({
-      where: { username },
-      include: { all: true },
+  async findOne(id: number): Promise<User> {
+    return await this.usersRepository.findOne({
+      where: { id },
+      relations: {
+        rooms: true,
+        messages: true,
+      },
     });
   }
 
-  async findOneById(id: number) {
-    return await this.userRepository.findOne({
-      where: { id },
-      include: { all: true },
+  async findOneByUsername(username: string): Promise<User> {
+    return await this.usersRepository.findOneBy({ username });
+  }
+
+  async findAll(): Promise<User[]> {
+    return await this.usersRepository.find({
+      relations: {
+        messages: true,
+        rooms: true,
+      },
     });
   }
 }

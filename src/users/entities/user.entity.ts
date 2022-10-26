@@ -1,40 +1,29 @@
-import {
-  BelongsToMany,
-  Column,
-  DataType,
-  HasMany,
-  Model,
-  Table,
-} from 'sequelize-typescript';
 import { Message } from '../../messages/entities/message.entity';
 import { Room } from '../../rooms/entities/room.entity';
-import { UserRooms } from '../../rooms/entities/user-rooms.entity';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-interface UserCreationData {
-  username: string;
-  password: string;
-}
-
-@Table({ tableName: 'users' })
-export class User extends Model<User, UserCreationData> {
-  @Column({
-    type: DataType.INTEGER,
-    unique: true,
-    autoIncrement: true,
-    allowNull: false,
-    primaryKey: true,
-  })
+@Entity()
+export class User {
+  @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: DataType.STRING, unique: true, allowNull: false })
+  @Column({ unique: true })
   username: string;
 
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column()
   password: string;
 
-  @HasMany(() => Message, 'userId')
+  @OneToMany(() => Message, (message) => message.author)
   messages: Message[];
 
-  @BelongsToMany(() => Room, () => UserRooms)
+  @ManyToMany(() => Room, (room) => room.users)
+  @JoinTable()
   rooms: Room[];
 }

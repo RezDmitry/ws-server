@@ -17,5 +17,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     UsersModule,
     RoomsModule,
   ],
+  exports: [MessagesService],
 })
 export class MessagesModule {}

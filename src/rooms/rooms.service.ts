@@ -3,7 +3,6 @@ import { Room } from './entities/room.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateRoomDto } from './dto/create-room.dto';
-import { UpdateRoomDto } from './dto/update-room.dto';
 import { UsersService } from '../users/users.service';
 
 @Injectable()
@@ -36,10 +35,7 @@ export class RoomsService {
     });
   }
 
-  async addUserToRoom(
-    roomId: number,
-    userId: number,
-  ): Promise<Room> {
+  async addUserToRoom(roomId: number, userId: number): Promise<Room> {
     const room = await this.findOne(roomId);
     const user = await this.usersService.findOne(userId);
     room.users.push(user);

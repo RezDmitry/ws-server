@@ -3,14 +3,12 @@ import {
   Controller,
   Get,
   Param,
-  Patch,
   Post,
   Req,
   UseGuards,
 } from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { CreateRoomDto } from './dto/create-room.dto';
-import { UpdateRoomDto } from './dto/update-room.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
@@ -19,8 +17,9 @@ export class RoomsController {
   constructor(private readonly roomsService: RoomsService) {}
 
   @Post()
-  async create(@Body() dto: CreateRoomDto) {
-    return await this.roomsService.create(dto);
+  async create(@Body() dto: CreateRoomDto, @Req() req) {
+    const room = await this.roomsService.create(dto);
+    return await this.roomsService.addUserToRoom(room.id, req.user.id);
   }
 
   @Post(':id/connect')
